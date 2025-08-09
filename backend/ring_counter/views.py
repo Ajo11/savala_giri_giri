@@ -1,5 +1,3 @@
-# backend/ring_counter/views.py
-
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,12 +21,24 @@ def create_final_audio(ring_count):
         savala_sound = AudioSegment.from_mp3("savala.mp3")
         
         if ring_count == 0:
-             # This case should no longer be hit, but is kept for safety
+            # This case should no longer be hit, but is kept for safety
             final_audio = savala_sound
         else:
-            giri_sound = AudioSegment.from_mp3("giri.mp3")
-            repeated_giri = giri_sound * ring_count
-            fast_giri = repeated_giri.speedup(playback_speed=1.2)
+            # Reduce the number of giri segments to half.
+            repeat_count = ring_count // 2 if ring_count > 1 else 1
+
+            # Load the giri sound and apply proper fade-in and fade-out
+            giri_sound = AudioSegment.from_mp3("giri.mp3").fade_in(100).fade_out(100)
+            concatenated_giri = AudioSegment.empty()
+            crossfade_duration = 100  # crossfade duration in milliseconds
+
+            for _ in range(repeat_count):
+                if len(concatenated_giri) == 0:
+                    concatenated_giri = giri_sound
+                else:
+                    concatenated_giri = concatenated_giri.append(giri_sound, crossfade=crossfade_duration)
+            
+            fast_giri = concatenated_giri.speedup(playback_speed=1.2)
             final_audio = savala_sound + fast_giri
         
         buffer = io.BytesIO()

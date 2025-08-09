@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rrzhn75ngxwpaxv$h46_8@5hfbx&)i3f^1c54&t*g^@hr18=!j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -94,7 +94,7 @@ DATABASES = {
 }
 # backend/onion_project/settings.py
 
-GEMINI_API_KEY = "AIzaSyBX2j4czlYP8amo5lrvE6WKyFjEw5M_Tvw"
+GEMINI_API_KEY = "AIzaSyDRyg8UKShou-3yLv2z9iH4iPotSj8fxNw"
 
 
 # Password validation
